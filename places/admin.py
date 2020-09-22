@@ -6,7 +6,7 @@ from adminsortable2.admin import SortableInlineAdminMixin
 
 class PhotoInline(SortableInlineAdminMixin,admin.TabularInline):
     model = Photo
-    fields = ('photo', 'prev_image','photo_order')
+    fields = ['photo', 'prev_image','photo_order']
     readonly_fields = ["prev_image"]
 
 
