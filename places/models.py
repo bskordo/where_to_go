@@ -4,18 +4,21 @@ from tinymce import models as tinymce_models
 
 
 class Place(models.Model):
-    title = models.CharField("Название место отдыха", max_length=100)
-    description_short = models.CharField("Короткое описание место отдыха", max_length=200, blank=True)
-    description_long = tinymce_models.HTMLField("Полное описание место отдыха", blank=True)
+    title = models.CharField("Название", max_length=100)
+    description_short = models.CharField("Короткое описание", max_length=200, blank=True)
+    description_long = tinymce_models.HTMLField("Полное описание", blank=True)
     latitude = models.FloatField("Широта")
     longitude = models.FloatField("Долгота")
 
 
+    def __str__(self):
+        return self.title
+
 
 class Photo(models.Model):
-    place = models.ForeignKey(Place, on_delete=models.CASCADE, verbose_name="Cвязь с местом отдыха",related_name='places')
-    photo_order = models.PositiveIntegerField("Gорядок фотографий",default=0, blank=False, null=False)
-    photo = models.ImageField("Фотография место отдыха")
+    place = models.ForeignKey(Place, on_delete=models.CASCADE, verbose_name="Место отдыха",related_name='places')
+    photo_order = models.PositiveIntegerField("Порядок фотографий",default=0)
+    photo = models.ImageField("Фотографие место")
 
 
     class Meta:
