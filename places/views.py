@@ -10,7 +10,7 @@ from django.urls import reverse
 
 def place_details(request,id):
     place = get_object_or_404(Place, id=id)
-    photos = Photo.objects.filter(place=place)
+    photos = place.place_photo.all()
     place_details = {
         'title': place.title,
         'imgs' : [photo.photo.url for photo in photos],
