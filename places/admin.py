@@ -11,7 +11,10 @@ class PhotoInline(SortableInlineAdminMixin,admin.TabularInline):
 
 
     def prev_image(self, photo):
-        return mark_safe(f'<img src="{photo.photo.url}" height="200">')
+        try:
+            return format_html('<img src="{}"  height="200"/>'.format(photo.photo.url))
+        except:
+            return format_html('Картинка ещё не загружена')
 
 
 @admin.register(Place)
