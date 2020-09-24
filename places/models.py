@@ -10,21 +10,17 @@ class Place(models.Model):
     latitude = models.FloatField("Широта")
     longitude = models.FloatField("Долгота")
 
-
     def __str__(self):
         return self.title
 
 
 class Photo(models.Model):
-    place = models.ForeignKey(Place, on_delete=models.CASCADE, verbose_name="Место отдыха",related_name='place_photo')
-    photo_order = models.PositiveIntegerField("Порядок фотографий",default=0)
+    place = models.ForeignKey(Place, on_delete=models.CASCADE, verbose_name="Место отдыха", related_name='place_photo')
+    photo_order = models.PositiveIntegerField("Порядок фотографий", default=0)
     photo = models.ImageField("Фотографие место")
-
 
     class Meta:
         ordering = ["photo_order"]
 
-
     def __str__(self):
-        return '%s  %s'  %(self.photo_order, self.place.title)
-
+        return '%s  %s' % (self.photo_order, self.place.title)
