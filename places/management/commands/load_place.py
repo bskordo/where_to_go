@@ -6,10 +6,15 @@ from places.models import Place, Photo
 from PIL import Image as Img
 from io import BytesIO
 from django.core.files.base import ContentFile
+import logging
+logger = logging.getLogger('Logger')
 
 
 class Command(BaseCommand):
     help = 'Create place'
+
+    def is_server_response_correct(self, response):
+        return response.ok and 'error' not in response.json()
 
     def add_arguments(self, parser):
         parser.add_argument('site_url', type=str, help='site url with place description')
@@ -34,5 +39,8 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         url = kwargs['site_url']
         response = requests.get(url)
-        json_data = json.loads(response.text)
-        self.insert_into_place_table(json_data)
+        if self.is_server_response_correct(response):
+            json_data = json.loads(response.text)
+            self.insert_into_place_table(json_data)
+        else:
+            logger.error('Received Bad response')
