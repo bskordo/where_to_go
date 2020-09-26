@@ -20,12 +20,12 @@ class Command(BaseCommand):
         parser.add_argument('site_url', type=str, help='site url with place description')
 
     def insert_into_place_table(self, data):
-        place, not_created = Place.objects.get_or_create(title=data['title'],
+        place, created = Place.objects.get_or_create(title=data['title'],
             description_short=data['description_short'],
             longitude=data['coordinates']['lng'],
             latitude=data['coordinates']['lat'],
             description_long=data['description_long'])
-        if not_created:
+        if created:
             images = data['imgs']
             for img in images:
                 response = requests.get(img)
