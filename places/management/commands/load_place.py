@@ -20,11 +20,11 @@ class Command(BaseCommand):
         parser.add_argument('site_url', type=str, help='site url with place description')
 
     def insert_into_place_table(self, data):
-        place, created = Place.objects.get_or_create(title=data['title'],
-            description_short=data['description_short'],
-            longitude=data['coordinates']['lng'],
-            latitude=data['coordinates']['lat'],
-            description_long=data['description_long'])
+        place, created = Place.objects.get_or_create(title=data['title'], defaults={
+            'description_short': data['description_short'],
+            'longitude': data['coordinates']['lng'],
+            'latitude': data['coordinates']['lat'],
+            'description_long': data['description_long']})
         if created:
             images = data['imgs']
             for img in images:
@@ -40,7 +40,7 @@ class Command(BaseCommand):
         url = kwargs['site_url']
         response = requests.get(url)
         if self.is_server_response_correct(response):
-            json_data = json.loads(response.text)
+            json_data = response.json()
             self.insert_into_place_table(json_data)
         else:
             logger.error('Received Bad response')
