@@ -19,4 +19,4 @@ def place_details(request,pk):
         'coordinates':{
             'lat':place.latitude,
             'lng':place.longitude}}
-    return JsonResponse(place_details)
+    return JsonResponse( place_details,safe=False,json_dumps_params={'ensure_ascii': False,'indent':4})
